@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vue.js Pet Depot</title>
+        <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                margin: 0;
+                padding: 0;
+            }
+
+            #app {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            header {
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px;
+                text-align: center;
+                border-radius: 8px;
+                margin-bottom: 20px;
+            }
+
+            h1 {
+                margin: 0;
+                font-size: 2em;
+            }
+
+            main {
+                background-color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            figure {
+                margin: 0;
+                padding: 0;
+                text-align: center;
+            }
+
+            img {
+                max-width: 100%;
+                border-radius: 8px;
+            }
+
+            h2 {
+                color: #333;
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            p {
+                color: #666;
+                font-size: 1.1em;
+                margin: 10px 0;
+            }
+
+            button {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 1em;
+                display: block;
+                margin: 20px auto;
+            }
+
+            button:hover {
+                background-color: #45a049;
+            }
+
+            button:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+            }
+
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+            li {
+                padding: 10px;
+                background-color: #f9f9f9;
+                border-bottom: 1px solid #ddd;
+                font-size: 1.1em;
+                margin-bottom: 10px;
+            }
+
+            /* Cart and checkout styling */
+            header p {
+                font-size: 1.2em;
+                margin-top: 10px;
+            }
+
+            .checkout-header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .checkout-header h2 {
+                color: #4CAF50;
+                font-size: 2em;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <header>
+                <h1 v-text="sitename"></h1>
+                <p>Cart ({{ cartItemCount }} items)</p>
+                <button v-on:click="viewCart">Go to Checkout</button>
+            </header>
+
+            <main v-if="currentView === 'products'">
+                <figure>
+                    <img v-bind:src="product.image" alt="Product Image">
+                </figure>
+                <h2 v-text="product.title"></h2>
+                <p v-html="product.description"></p>
+                <p>Price: {{ product.price }}</p>
+                <p>Available: {{ product.availableInventory }}</p>
+
+                <button
+                v-on:click="addToCart(product)"
+                :disabled="!product.availableInventory">
+                Add to Cart
+                </button>
+            </main>
+
+            <main v-else>
+                <h2>Checkout</h2>
+                <ul>
+                    <li v-for="item in cart">
+                        {{ item.title }} - {{ item.price }}
+                    </li>
+                </ul>
+                <button v-on:click="viewProducts">Go back to Product List</button>
+            </main>
+        </div>
+
+        <script>
+                    var webstore = new Vue({
+            el:'#app',
+            data: {
+                sitename: 'Vue.js Pet Depot',
+                currentView: 'products', // Switch between product and checkout view
+                product: {
+                    id: 1001,
+                    title: "Cat Food, 25lb bag",
+                    description: "A 25 pound bag of  <em>irresistible</em> organic goodness for your cat.",
+                    price: 2000,
+                    image: "european-shorthair-8601492_640.jpg",
+                    availableInventory: 5 // Limit inventory
+                },
+                cart: [] // Store items in the cart
+            },
+            computed: {
+                // Cart item count
+                cartItemCount: function() {
+                    return this.cart.length;
+                }
+            },
+            methods: {
+                // Add item to cart and reduce inventory
+                addToCart: function(product) {
+                    if (product.availableInventory > 0) {
+                        this.cart.push(product);
+                        product.availableInventory--;
+                    }
+                },
+                // Switch to checkout view
+                viewCart: function() {
+                    this.currentView = 'checkout';
+                },
+                // Switch back to product view
+                viewProducts: function() {
+                    this.currentView = 'products';
+                }
+            }
+        });
+        </script>
+    </body>
+</html>
