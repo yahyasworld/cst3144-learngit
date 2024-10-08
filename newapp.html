@@ -1,0 +1,59 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lesson Information</title>
+        <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+        <style>
+    .lesson-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .lesson-container img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 20px;
+    }
+    .lesson-details {
+      text-align: left;
+    }
+    .lesson-details h2 {
+      color: #333;
+    }
+    .lesson-details p {
+      color: #666;
+    }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <div class="lesson-container">
+                <img v-bind:src="lesson.image">
+                <div class="lesson-details">
+                    <h2>{{ lesson.subject }}</h2>
+                    <p><strong>Location:</strong> {{ lesson.location }}</p>
+                    <p><strong>Price:</strong> {{ lesson.price }}</p>
+                </div>
+            </div>
+        </div>
+        <script>
+          let app = new Vue({
+            el: '#app',
+            data: {
+              lesson: {
+                subject: 'CST3144 Full Stack Development',
+                location: 'Middlesex University Dubai, DKP',
+                price: 'AED 5569.70 per month',
+                image: 'istockphoto-1358013032-612x612.jpg'
+              }
+            }
+          })
+        </script>
+    </body>
+</html>
