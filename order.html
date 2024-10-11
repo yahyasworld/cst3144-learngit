@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vue.js Pet Depot</title>
+        <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+        <style>
+            body {
+    font-family: Arial, sans-serif;
+    background-color: burlywood;
+    margin: 0;
+    padding: 20px;
+}
+
+#app {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: peru;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+input, select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    width: auto;
+    margin-right: 5px;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    #app {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    input, select {
+        width: 100%;
+    }
+}
+/* General button styles */
+button {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Button active (pressed) state */
+button:active {
+    background-color: #003f7f;
+    transform: scale(0.98);
+}
+
+/* Disabled button */
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+    button {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+}
+/* Checkbox styles */
+input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Checked state with a custom tick */
+input[type="checkbox"]:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: white;
+    font-size: 16px;
+    position: absolute;
+    top: 0;
+    left: 4px;
+}
+
+/* Label styles for the checkbox */
+label[for="gift"] {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 8px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Hover effect */
+input[type="checkbox"]:hover {
+    border-color: #0056b3;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+    }
+
+    input[type="checkbox"]:checked::after {
+        font-size: 14px;
+    }
+
+    label[for="gift"] {
+        font-size: 14px;
+    }
+}
+
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <h2>Checkout</h2>
+            <p>
+                <strong>First Name: </strong>
+                <input v-model.trim="order.firstName"/>
+            </p>
+            <p>
+                <strong>Last Name: </strong>
+                <input v-model.trim="order.lastName"/>
+            </p>
+            <p>
+                <strong>Address: </strong>
+                <input v-model.trim="order.address"/>
+            </p>
+            <p>
+                <strong>City: </strong>
+                <input v-model.trim="order.city"/>
+            </p>
+            <p>
+                <strong>Emirate: </strong>
+                <select v-model="order.emirate">
+                    <option disabled value="">Emirate</option>
+                    <option v-for="(emirate, key) in emirate"
+                    v-bind:value="emirate">{{key}}</option>
+                </select>
+            </p>
+            <p>
+                <strong>Zip/Postal Code: </strong>
+                <input v-model.trim="order.zip"/>
+            </p>
+            <p><input type="checkbox" id="gift" value="true" v-model="order.gift"  v-bind:true-value="order.sendGift"
+                v-bind:false-value="order.dontSendGift">
+                <label for="gift">Ship As Gift?</label></p>
+                <p><input type="radio" id="home" value="Home" v-model="order.method">
+                <label for="home">Home</label>
+                <input type="radio" id="business" value="Business" v-model="order.method">
+                <label for="business">Business</label>
+            </p>
+            <h2>Order Information</h2>
+            <p>First Name: {{ order.firstName }}</p>
+            <p>Last Name: {{ order.lastName }}</p>
+            <p>Address: {{ order.address }}</p>
+            <p>City: {{ order.city }}</p>
+            <p>Zip/Postal Code: {{ order.zip }}</p>
+            <p>Emirate: {{ order.emirate }}</p>
+            <p>Gift? {{ order.gift }}</p>
+            <p>Method: {{ order.method }}</p>
+            
+            <button v-on:click="submitForm">Place Order</button>
+         
+        </div>
+        <script>
+            var webstore = new Vue ({
+                el: '#app',
+                data: {
+                    sitename: "Vue.js Pet Depot",
+                    showProduct: true,
+                    order: {
+                        firstName: '',
+                        lastName: '',
+                        address: '',
+                        city: '',
+                        zip: '',
+                        method: '',
+                        gift: false,
+                        sendGift: 'Send as a gift',
+                        dontSendGift: 'Do not send as a gift'
+                        },
+                    emirate: {
+                        DXB: 'Dubai',
+                        AUH: 'Abu Dhabi',
+                        SHJ: 'Sharjah',
+                        RAK: 'Ras Al Khaimah',
+                        FJH: 'Fujairah',
+                        AJM: 'Ajman',
+                        UAQ: 'Umm Al Quawin'
+                    }
+                },
+                methods:{
+                    submitForm () {alert('Order submitted!')}
+                }                 
+            });
+        </script>
+    </body>
+</html>
